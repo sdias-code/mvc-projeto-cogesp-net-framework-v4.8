@@ -1,0 +1,268 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="sdiasBdModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Clientes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nome" Type="nvarchar(max)" />
+          <Property Name="Sobrenome" Type="nvarchar(max)" />
+          <Property Name="Cpf" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Contas">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ClienteId" Type="int" />
+          <Property Name="Agencia" Type="int" Nullable="false" />
+          <Property Name="Numero" Type="int" Nullable="false" />
+          <Property Name="Saldo" Type="float" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TipoTransacoes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Descricao" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Transacoes">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ContaId" Type="int" />
+          <Property Name="TipoTransacaoId" Type="int" />
+          <Property Name="Valor" Type="float" Nullable="false" />
+          <Property Name="Data" Type="datetime2" Precision="7" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Contas_Clientes_ClienteId">
+          <End Role="Clientes" Type="Self.Clientes" Multiplicity="0..1" />
+          <End Role="Contas" Type="Self.Contas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clientes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Contas">
+              <PropertyRef Name="ClienteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Transacoes_Contas_ContaId">
+          <End Role="Contas" Type="Self.Contas" Multiplicity="0..1" />
+          <End Role="Transacoes" Type="Self.Transacoes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Contas">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Transacoes">
+              <PropertyRef Name="ContaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Transacoes_TipoTransacoes_TipoTransacaoId">
+          <End Role="TipoTransacoes" Type="Self.TipoTransacoes" Multiplicity="0..1" />
+          <End Role="Transacoes" Type="Self.Transacoes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoTransacoes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Transacoes">
+              <PropertyRef Name="TipoTransacaoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="sdiasBdModelStoreContainer">
+          <EntitySet Name="Clientes" EntityType="Self.Clientes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Contas" EntityType="Self.Contas" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TipoTransacoes" EntityType="Self.TipoTransacoes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Transacoes" EntityType="Self.Transacoes" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Contas_Clientes_ClienteId" Association="Self.FK_Contas_Clientes_ClienteId">
+            <End Role="Clientes" EntitySet="Clientes" />
+            <End Role="Contas" EntitySet="Contas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Transacoes_Contas_ContaId" Association="Self.FK_Transacoes_Contas_ContaId">
+            <End Role="Contas" EntitySet="Contas" />
+            <End Role="Transacoes" EntitySet="Transacoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Transacoes_TipoTransacoes_TipoTransacaoId" Association="Self.FK_Transacoes_TipoTransacoes_TipoTransacaoId">
+            <End Role="TipoTransacoes" EntitySet="TipoTransacoes" />
+            <End Role="Transacoes" EntitySet="Transacoes" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="sdiasBdModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Cliente">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nome" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Sobrenome" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Cpf" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Contas" Relationship="Self.FK_Contas_Clientes_ClienteId" FromRole="Clientes" ToRole="Contas" />
+        </EntityType>
+        <EntityType Name="Conta">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ClienteId" Type="Int32" />
+          <Property Name="Agencia" Type="Int32" Nullable="false" />
+          <Property Name="Numero" Type="Int32" Nullable="false" />
+          <Property Name="Saldo" Type="Double" Nullable="false" />
+          <NavigationProperty Name="Cliente" Relationship="Self.FK_Contas_Clientes_ClienteId" FromRole="Contas" ToRole="Clientes" />
+          <NavigationProperty Name="Transacoes" Relationship="Self.FK_Transacoes_Contas_ContaId" FromRole="Contas" ToRole="Transacoes" />
+        </EntityType>
+        <EntityType Name="TipoTransaco">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Descricao" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Transacoes" Relationship="Self.FK_Transacoes_TipoTransacoes_TipoTransacaoId" FromRole="TipoTransacoes" ToRole="Transacoes" />
+        </EntityType>
+        <EntityType Name="Transaco">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ContaId" Type="Int32" />
+          <Property Name="TipoTransacaoId" Type="Int32" />
+          <Property Name="Valor" Type="Double" Nullable="false" />
+          <Property Name="Data" Type="DateTime" Nullable="false" Precision="7" />
+          <NavigationProperty Name="Conta" Relationship="Self.FK_Transacoes_Contas_ContaId" FromRole="Transacoes" ToRole="Contas" />
+          <NavigationProperty Name="TipoTransaco" Relationship="Self.FK_Transacoes_TipoTransacoes_TipoTransacaoId" FromRole="Transacoes" ToRole="TipoTransacoes" />
+        </EntityType>
+        <Association Name="FK_Contas_Clientes_ClienteId">
+          <End Role="Clientes" Type="Self.Cliente" Multiplicity="0..1" />
+          <End Role="Contas" Type="Self.Conta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Clientes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Contas">
+              <PropertyRef Name="ClienteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Transacoes_Contas_ContaId">
+          <End Role="Contas" Type="Self.Conta" Multiplicity="0..1" />
+          <End Role="Transacoes" Type="Self.Transaco" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Contas">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Transacoes">
+              <PropertyRef Name="ContaId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Transacoes_TipoTransacoes_TipoTransacaoId">
+          <End Role="TipoTransacoes" Type="Self.TipoTransaco" Multiplicity="0..1" />
+          <End Role="Transacoes" Type="Self.Transaco" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TipoTransacoes">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Transacoes">
+              <PropertyRef Name="TipoTransacaoId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="sdiasBdEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Clientes" EntityType="Self.Cliente" />
+          <EntitySet Name="Contas" EntityType="Self.Conta" />
+          <EntitySet Name="TipoTransacoes" EntityType="Self.TipoTransaco" />
+          <EntitySet Name="Transacoes" EntityType="Self.Transaco" />
+          <AssociationSet Name="FK_Contas_Clientes_ClienteId" Association="Self.FK_Contas_Clientes_ClienteId">
+            <End Role="Clientes" EntitySet="Clientes" />
+            <End Role="Contas" EntitySet="Contas" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Transacoes_Contas_ContaId" Association="Self.FK_Transacoes_Contas_ContaId">
+            <End Role="Contas" EntitySet="Contas" />
+            <End Role="Transacoes" EntitySet="Transacoes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Transacoes_TipoTransacoes_TipoTransacaoId" Association="Self.FK_Transacoes_TipoTransacoes_TipoTransacaoId">
+            <End Role="TipoTransacoes" EntitySet="TipoTransacoes" />
+            <End Role="Transacoes" EntitySet="Transacoes" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="sdiasBdModelStoreContainer" CdmEntityContainer="sdiasBdEntities">
+          <EntitySetMapping Name="Clientes">
+            <EntityTypeMapping TypeName="sdiasBdModel.Cliente">
+              <MappingFragment StoreEntitySet="Clientes">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Nome" ColumnName="Nome" />
+                <ScalarProperty Name="Sobrenome" ColumnName="Sobrenome" />
+                <ScalarProperty Name="Cpf" ColumnName="Cpf" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Contas">
+            <EntityTypeMapping TypeName="sdiasBdModel.Conta">
+              <MappingFragment StoreEntitySet="Contas">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ClienteId" ColumnName="ClienteId" />
+                <ScalarProperty Name="Agencia" ColumnName="Agencia" />
+                <ScalarProperty Name="Numero" ColumnName="Numero" />
+                <ScalarProperty Name="Saldo" ColumnName="Saldo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TipoTransacoes">
+            <EntityTypeMapping TypeName="sdiasBdModel.TipoTransaco">
+              <MappingFragment StoreEntitySet="TipoTransacoes">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="Descricao" ColumnName="Descricao" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Transacoes">
+            <EntityTypeMapping TypeName="sdiasBdModel.Transaco">
+              <MappingFragment StoreEntitySet="Transacoes">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="ContaId" ColumnName="ContaId" />
+                <ScalarProperty Name="TipoTransacaoId" ColumnName="TipoTransacaoId" />
+                <ScalarProperty Name="Valor" ColumnName="Valor" />
+                <ScalarProperty Name="Data" ColumnName="Data" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
